@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<project name="HW13" basedir="." default="clean">
+    <property environment="env"/>
+    <echo message="ANT_HOME: ${env.ANT_HOME}"/>
+
+    <property name="src" location="src"/>
+    <property name="bin" location="bin"/>
+
+    <path id="classpath">
+        <pathelement location="bin"/>
+    </path>
+
+    <echo message="CLASSPATH: ${toString:classpath}"/>
+
+    <target name="init">
+        <mkdir dir="${bin}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${bin}" includeAntRuntime="no">
+            <classpath refid="classpath"/>
+            <include name="edu/umb/cs681/hw13/*.java"/>
+            <include name="edu/umb/cs681/hw13/ThreadSafe/*.java"/>
+        </javac>
+    </target>
+
+    <target name="main1" depends="compile">
+        <java classname="edu.umb.cs681.hw13.Main"
+              classpathref="classpath"
+              fork="true"/>
+    </target>
+
+    <target name="main2" depends="compile">
+        <java classname="edu.umb.cs681.hw13.ThreadSafe.Main"
+              classpathref="classpath"
+              fork="true"/>
+    </target>
+
+    <target name="clean" depends="main1, main2">
+        <delete includeemptydirs="true">
+            <fileset dir="${bin}/edu/umb/cs681/hw13" includes="**/*"/>
+            <fileset dir="${bin}/edu/umb/cs681/hw13/ThreadSafe" includes="**/*"/>
+        </delete>
+    </target>
+
+</project>
